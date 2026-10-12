@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프로그램 내려받기</title>
+<style>
+  body { margin: 0; background: #f4f6fb; color: #1f2430; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; line-height: 1.6; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #687085; margin: 0 0 22px; }
+  .card { background: #fff; border: 1.5px solid #dfe3ec; border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .card.on { border-color: #2f5bd3; box-shadow: 0 0 0 3px #e9effd; }
+  .badge { font-weight: 700; color: #2f5bd3; background: #e9effd; border-radius: 99px; padding: 3px 12px; }
+  .name { flex: 1; font-size: 18px; font-weight: 700; min-width: 140px; }
+  a.btn { text-decoration: none; padding: 9px 16px; border-radius: 9px; font-weight: 600; font-size: 15px; }
+  a.run { background: #fff; color: #2f5bd3; border: 1.5px solid #2f5bd3; }
+  a.dl { background: #2f5bd3; color: #fff; border: 1.5px solid #2f5bd3; }
+  .how { background: #fff; border: 1px solid #dfe3ec; border-radius: 14px; padding: 18px 22px; margin-top: 22px; }
+  .how h2 { font-size: 16px; margin: 0 0 6px; }
+  .how ol { margin: 0; padding-left: 20px; }
+  code { background: #eef0f5; padding: 1px 6px; border-radius: 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AI가 만든 프로그램 검증하기</h1>
+  <p class="sub">활동지에서 배정받은 유형의 프로그램만 사용하세요.</p>
+
+  <div class="card" id="A">
+    <span class="badge">A형</span><span class="name">점수 판별기</span>
+    <a class="btn run" href="A_score.html" target="_blank">실행하기</a>
+    <a class="btn dl" href="A_score.html" download="A_점수판별기.html">내려받기</a>
+  </div>
+  <div class="card" id="B">
+    <span class="badge">B형</span><span class="name">동아리 예산 관리</span>
+    <a class="btn run" href="B_budget.html" target="_blank">실행하기</a>
+    <a class="btn dl" href="B_budget.html" download="B_예산관리.html">내려받기</a>
+  </div>
+  <div class="card" id="C">
+    <span class="badge">C형</span><span class="name">학급 투표</span>
+    <a class="btn run" href="C_vote.html" target="_blank">실행하기</a>
+    <a class="btn dl" href="C_vote.html" download="C_학급투표.html">내려받기</a>
+  </div>
+
+  <div class="how">
+    <h2>사용 방법</h2>
+    <ol>
+      <li><b>실행하기</b>로 프로그램을 열어 시험합니다. 처음 상태로 되돌리려면 새로 고침(F5)하세요.</li>
+      <li><b>내려받기</b>로 받은 파일을 메모장 등 텍스트 편집기로 열면 코드를 볼 수 있습니다. 맨 아래 <code>&lt;script&gt;</code> 부분을 살펴보세요.</li>
+      <li>AI가 고쳐 준 코드는 메모장에 붙여 넣고 <code>수정본.html</code>처럼 <b>다른 이름</b>으로 저장한 뒤, 파일을 더블클릭해 브라우저에서 실행합니다. (저장할 때 인코딩은 UTF-8)</li>
+    </ol>
+  </div>
+</div>
+<script>
+  // 활동지에서 ?type=A 처럼 들어오면 해당 유형을 강조
+  const t = new URLSearchParams(location.search).get('type');
+  const el = t && document.getElementById(t.toUpperCase());
+  if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'center' }); }
+</script>
+</body>
+</html>

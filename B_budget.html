@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동아리 예산 관리</title>
+<style>
+  body { font-family: "Malgun Gothic", sans-serif; background: #f3f8f2; display: flex; justify-content: center; padding-top: 50px; }
+  .card { background: #fff; padding: 30px 36px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); width: 400px; }
+  h1 { font-size: 24px; margin: 0 0 6px; text-align: center; }
+  p.desc { color: #666; font-size: 14px; text-align: center; margin-top: 0; }
+  .money { display: flex; justify-content: space-between; background: #eef6ec; padding: 12px 16px; border-radius: 10px; font-size: 16px; margin-bottom: 18px; }
+  .money b { font-size: 20px; color: #2d7a32; }
+  label { font-size: 14px; color: #444; }
+  input { width: 100%; box-sizing: border-box; font-size: 16px; padding: 8px; margin: 4px 0 12px; border: 2px solid #cdc; border-radius: 8px; }
+  button { width: 100%; font-size: 18px; padding: 10px; border: none; border-radius: 8px; background: #3c9a43; color: #fff; cursor: pointer; }
+  button:hover { background: #2f7d35; }
+  #message { margin-top: 12px; min-height: 22px; text-align: center; color: #c0392b; font-weight: bold; }
+  ul { padding-left: 20px; font-size: 15px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>💰 동아리 예산 관리</h1>
+  <p class="desc">물품을 구매할 때마다 남은 예산이 줄어듭니다.</p>
+  <div class="money">
+    <span>처음 예산<br><b>50,000원</b></span>
+    <span style="text-align:right">남은 예산<br><b id="remain">50,000원</b></span>
+  </div>
+  <label>물품 이름</label>
+  <input type="text" id="item" placeholder="예: 색종이">
+  <label>가격(원)</label>
+  <input type="number" id="price" placeholder="예: 8000">
+  <button onclick="buy()">구매</button>
+  <div id="message"></div>
+  <h3>구매 내역</h3>
+  <ul id="list"></ul>
+</div>
+
+<script>
+  const budget = 50000;
+  let remaining = budget;
+
+  function buy() {
+    const item = document.getElementById("item").value;
+    const price = Number(document.getElementById("price").value);
+    const message = document.getElementById("message");
+
+    if (item === "" || price <= 0) {
+      message.textContent = "물품 이름과 가격을 바르게 입력하세요.";
+      return;
+    }
+    if (price > remaining) {
+      message.textContent = "예산이 부족합니다.";
+      return;
+    }
+
+    remaining = budget - price;
+
+    const li = document.createElement("li");
+    li.textContent = item + " - " + price.toLocaleString() + "원";
+    document.getElementById("list").appendChild(li);
+
+    document.getElementById("remain").textContent = remaining.toLocaleString() + "원";
+    message.textContent = "";
+    document.getElementById("item").value = "";
+    document.getElementById("price").value = "";
+  }
+</script>
+</body>
+</html>

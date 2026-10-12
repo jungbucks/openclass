@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>점수 판별기</title>
+<style>
+  body { font-family: "Malgun Gothic", sans-serif; background: #f2f5fa; display: flex; justify-content: center; padding-top: 60px; }
+  .card { background: #fff; padding: 32px 40px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); width: 360px; text-align: center; }
+  h1 { font-size: 24px; margin-bottom: 6px; }
+  p.desc { color: #666; font-size: 14px; margin-top: 0; }
+  input { width: 120px; font-size: 20px; padding: 8px; text-align: center; border: 2px solid #ccd; border-radius: 8px; }
+  button { font-size: 18px; padding: 9px 22px; margin-left: 8px; border: none; border-radius: 8px; background: #3b6fd8; color: #fff; cursor: pointer; }
+  button:hover { background: #2c58b3; }
+  #result { margin-top: 26px; font-size: 22px; font-weight: bold; min-height: 30px; }
+  table { margin: 22px auto 0; border-collapse: collapse; font-size: 14px; color: #555; }
+  td { border: 1px solid #ddd; padding: 4px 12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>📊 점수 판별기</h1>
+  <p class="desc">0~100 사이의 점수를 입력하세요.</p>
+  <input type="number" id="score" min="0" max="100">
+  <button onclick="judge()">판별</button>
+  <div id="result"></div>
+  <table>
+    <tr><td>A</td><td>90점 이상</td></tr>
+    <tr><td>B</td><td>80점 이상</td></tr>
+    <tr><td>C</td><td>70점 이상</td></tr>
+    <tr><td>D</td><td>60점 이상</td></tr>
+    <tr><td>F</td><td>60점 미만</td></tr>
+  </table>
+</div>
+
+<script>
+  function judge() {
+    const input = document.getElementById("score").value;
+    const result = document.getElementById("result");
+    const score = Number(input);
+
+    if (input === "" || score < 0 || score > 100) {
+      result.textContent = "0~100 사이의 점수를 입력하세요.";
+      return;
+    }
+
+    let grade;
+    if (score > 90) {
+      grade = "A";
+    } else if (score > 80) {
+      grade = "B";
+    } else if (score > 70) {
+      grade = "C";
+    } else if (score > 60) {
+      grade = "D";
+    } else {
+      grade = "F";
+    }
+
+    result.textContent = score + "점은 " + grade + "등급입니다.";
+  }
+</script>
+</body>
+</html>

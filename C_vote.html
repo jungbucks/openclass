@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>학급 투표</title>
+<style>
+  body { font-family: "Malgun Gothic", sans-serif; background: #f7f3fa; display: flex; justify-content: center; padding-top: 50px; }
+  .card { background: #fff; padding: 30px 36px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); width: 400px; text-align: center; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  p.desc { color: #666; font-size: 14px; margin-top: 0; }
+  .options { display: flex; gap: 14px; margin: 20px 0; }
+  .options button { flex: 1; font-size: 17px; padding: 18px 8px; border: none; border-radius: 10px; color: #fff; cursor: pointer; }
+  #btnA { background: #7a4fc4; }
+  #btnB { background: #d9822b; }
+  .options button:hover { opacity: 0.85; }
+  .result { display: flex; justify-content: space-around; background: #f4effa; border-radius: 10px; padding: 14px; font-size: 16px; }
+  .result b { font-size: 26px; display: block; }
+  #total { margin-top: 14px; color: #555; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🗳️ 학급 투표</h1>
+  <p class="desc">체험학습 장소를 골라 주세요. 한 사람이 한 번씩 누릅니다.</p>
+  <div class="options">
+    <button id="btnA" onclick="voteA()">A안<br>과학관</button>
+    <button id="btnB" onclick="voteB()">B안<br>미술관</button>
+  </div>
+  <div class="result">
+    <span>A안<b id="countA">0</b>표</span>
+    <span>B안<b id="countB">0</b>표</span>
+  </div>
+  <div id="total">총 투표 수: 0표</div>
+</div>
+
+<script>
+  let count = 0;
+  let countA = 0;
+  let countB = 0;
+
+  function voteA() {
+    count = count + 1;
+    countA = count;
+    show();
+  }
+
+  function voteB() {
+    count = count + 1;
+    countB = count;
+    show();
+  }
+
+  function show() {
+    document.getElementById("countA").textContent = countA;
+    document.getElementById("countB").textContent = countB;
+    document.getElementById("total").textContent = "총 투표 수: " + count + "표";
+  }
+</script>
+</body>
+</html>
