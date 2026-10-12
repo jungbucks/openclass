@@ -4,19 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>프로그램 내려받기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-  body { margin: 0; background: #f4f6fb; color: #1f2430; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; line-height: 1.6; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 16px 60px; }
+  body { margin: 0; background: #f4f6fb; color: #1f2430; font-family: "Pretendard Variable", Pretendard, "Wanted Sans", -apple-system, "Malgun Gothic", sans-serif; line-height: 1.6; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 28px 16px 60px; }
   h1 { font-size: 22px; margin: 0 0 4px; }
   .sub { color: #687085; margin: 0 0 22px; }
-  .card { background: #fff; border: 1.5px solid #dfe3ec; border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .card.on { border-color: #2f5bd3; box-shadow: 0 0 0 3px #e9effd; }
-  .badge { font-weight: 700; color: #2f5bd3; background: #e9effd; border-radius: 99px; padding: 3px 12px; }
-  .name { flex: 1; font-size: 18px; font-weight: 700; min-width: 140px; }
-  a.btn { text-decoration: none; padding: 9px 16px; border-radius: 9px; font-weight: 600; font-size: 15px; }
-  a.run { background: #fff; color: #2f5bd3; border: 1.5px solid #2f5bd3; }
-  a.dl { background: #2f5bd3; color: #fff; border: 1.5px solid #2f5bd3; }
-  .how { background: #fff; border: 1px solid #dfe3ec; border-radius: 14px; padding: 18px 22px; margin-top: 22px; }
+  :root { --gt-ink: #0b0b0b; --gt-voltage: #ffe600; --gt-red: #ff3344; --gt-green: #10b25a; --gt-blue: #2a5bff; }
+  :root { --gt-ink-soft: #1d1d1d; --gt-surface: #fffdf5; --gt-mute: #7a776e; }
+  /* ===== 유형 카드 ===== */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .gt-card {
+    position: relative; display: flex; flex-direction: column; gap: 0.75rem;
+    padding: 1.4rem; background: var(--gt-surface); color: var(--gt-ink);
+    border: 1.5px solid var(--gt-ink); border-radius: 15px; box-shadow: 4px 4px 0 0 var(--gt-ink);
+    transition: transform 120ms cubic-bezier(0.2, 0, 0, 1), box-shadow 120ms cubic-bezier(0.2, 0, 0, 1), opacity 120ms;
+  }
+  .gt-card:hover, .gt-card:focus-within { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--gt-ink); }
+  .gt-card__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.75rem; border-bottom: 1.5px dashed var(--gt-ink); }
+  .gt-card__eyebrow { font-family: ui-monospace, "Courier New", monospace; font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gt-mute); }
+  .gt-card__chip { display: inline-flex; align-items: center; padding: 2px 11px; font-size: 0.8rem; font-weight: 800; background: var(--gt-voltage); border: 1.5px solid var(--gt-ink); border-radius: 999px; }
+  .gt-card__title { margin: 0; font-size: 1.45rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+  .gt-card__body { margin: 0; font-size: 0.94rem; line-height: 1.5; color: var(--gt-ink-soft); flex: 1; }
+  .gt-card__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 0.25rem; }
+  .gt-card__actions a.btn { min-width: 0; white-space: nowrap; }
+  .gt-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 0.75rem; margin-top: 0.25rem; border-top: 1.5px dashed var(--gt-ink); font-size: 0.75rem; }
+  .gt-card__status { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--gt-ink); }
+  .gt-card__dot { display: inline-block; width: 8px; height: 8px; background: #d6d3c8; border: 1px solid var(--gt-ink); border-radius: 999px; }
+  .gt-card__meta { font-family: ui-monospace, "Courier New", monospace; color: var(--gt-mute); letter-spacing: 0.04em; }
+  /* 내 유형으로 들어왔을 때 */
+  .gt-card.on { background: #fffbe0; box-shadow: 6px 6px 0 0 var(--gt-ink); }
+  .gt-card.on .gt-card__dot { background: var(--gt-green); box-shadow: 0 0 0 3px rgba(16, 178, 90, 0.18); animation: gt-card-pulse 1.6s ease-in-out infinite; }
+  .cards.picked .gt-card:not(.on) { opacity: 0.55; }
+  .cards.picked .gt-card:not(.on):hover { opacity: 1; }
+  @keyframes gt-card-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(16, 178, 90, 0.35); } 50% { box-shadow: 0 0 0 5px rgba(16, 178, 90, 0); } }
+  a.btn {
+    --b-bg: var(--gt-voltage); --b-fg: var(--gt-ink); --b-hover-fg: var(--gt-voltage); --caret: "↓";
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 0.8rem; min-width: 128px;
+    text-decoration: none; padding: 10px 15px; border-radius: 15px; font-weight: 700; font-size: 15px; line-height: 1.1;
+    background: var(--b-bg); color: var(--b-fg); border: 1.5px solid var(--gt-ink);
+    box-shadow: 4px 4px 0 0 var(--gt-ink); user-select: none;
+    transition: transform 120ms cubic-bezier(0.2, 0, 0, 1), box-shadow 120ms cubic-bezier(0.2, 0, 0, 1), background-color 120ms, color 120ms;
+  }
+  a.btn::after { content: var(--caret); opacity: 0.8; }
+  a.btn:hover { background: var(--gt-ink); color: var(--b-hover-fg); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--gt-ink); animation: gt-btn-glitch 320ms steps(2) 1; }
+  a.btn:hover::after { animation: gt-btn-blink 0.18s steps(1) infinite; opacity: 1; }
+  a.btn:focus-visible { outline: none; box-shadow: 6px 6px 0 0 var(--gt-ink), 0 0 0 3px var(--gt-voltage); }
+  a.btn:active { transform: translate(4px, 4px); background: var(--gt-ink); color: var(--b-hover-fg); box-shadow: 0 0 0 0 var(--gt-ink); animation: none; }
+  a.run { --b-bg: #fff; --b-hover-fg: #fff; --caret: "▶"; }
+  @keyframes gt-btn-blink { 50% { opacity: 0; } }
+  @keyframes gt-btn-glitch {
+    0%   { text-shadow: none; letter-spacing: 0; }
+    25%  { text-shadow: -2px 0 var(--gt-red), 2px 0 var(--gt-blue); letter-spacing: 0.04em; }
+    50%  { text-shadow: 2px 0 var(--gt-blue), -1px 0 var(--gt-green); }
+    75%  { text-shadow: -1px 0 var(--gt-green), 1px 0 var(--gt-red); }
+    100% { text-shadow: none; letter-spacing: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .gt-card, .gt-card__dot { transition: none; animation: none !important; } .gt-card:hover { transform: none; } a.btn, a.btn::after { transition: none; animation: none !important; } a.btn:hover { transform: none; } }
+  .how { background: var(--gt-surface); border: 1.5px dashed var(--gt-ink); border-radius: 15px; padding: 18px 22px; margin-top: 28px; }
   .how h2 { font-size: 16px; margin: 0 0 6px; }
   .how ol { margin: 0; padding-left: 20px; }
   code { background: #eef0f5; padding: 1px 6px; border-radius: 5px; }
@@ -27,20 +72,37 @@
   <h1>AI가 만든 프로그램 검증하기</h1>
   <p class="sub">활동지에서 배정받은 유형의 프로그램만 사용하세요.</p>
 
-  <div class="card" id="A">
-    <span class="badge">A형</span><span class="name">점수 판별기</span>
-    <a class="btn run" href="A_score.html" target="_blank">실행하기</a>
-    <a class="btn dl" href="A_score.html" download="A_점수판별기.html">내려받기</a>
-  </div>
-  <div class="card" id="B">
-    <span class="badge">B형</span><span class="name">동아리 예산 관리</span>
-    <a class="btn run" href="B_budget.html" target="_blank">실행하기</a>
-    <a class="btn dl" href="B_budget.html" download="B_예산관리.html">내려받기</a>
-  </div>
-  <div class="card" id="C">
-    <span class="badge">C형</span><span class="name">학급 투표</span>
-    <a class="btn run" href="C_vote.html" target="_blank">실행하기</a>
-    <a class="btn dl" href="C_vote.html" download="C_학급투표.html">내려받기</a>
+  <div class="cards" id="cards">
+    <article class="gt-card" id="A">
+      <div class="gt-card__head"><span class="gt-card__eyebrow">Type A</span><span class="gt-card__chip">A형</span></div>
+      <h2 class="gt-card__title">점수 판별기</h2>
+      <p class="gt-card__body">점수를 입력하면 A~F 등급을 알려 주는 프로그램</p>
+      <div class="gt-card__actions">
+        <a class="btn run" href="A_score.html" target="_blank">실행하기</a>
+        <a class="btn dl" href="A_score.html" download="A_점수판별기.html">내려받기</a>
+      </div>
+      <div class="gt-card__foot"><span class="gt-card__status"><span class="gt-card__dot"></span><span class="st">배정 대기</span></span><span class="gt-card__meta">A_score.html</span></div>
+    </article>
+    <article class="gt-card" id="B">
+      <div class="gt-card__head"><span class="gt-card__eyebrow">Type B</span><span class="gt-card__chip">B형</span></div>
+      <h2 class="gt-card__title">동아리 예산 관리</h2>
+      <p class="gt-card__body">물품을 살 때마다 남은 예산을 계산해 주는 프로그램</p>
+      <div class="gt-card__actions">
+        <a class="btn run" href="B_budget.html" target="_blank">실행하기</a>
+        <a class="btn dl" href="B_budget.html" download="B_예산관리.html">내려받기</a>
+      </div>
+      <div class="gt-card__foot"><span class="gt-card__status"><span class="gt-card__dot"></span><span class="st">배정 대기</span></span><span class="gt-card__meta">B_budget.html</span></div>
+    </article>
+    <article class="gt-card" id="C">
+      <div class="gt-card__head"><span class="gt-card__eyebrow">Type C</span><span class="gt-card__chip">C형</span></div>
+      <h2 class="gt-card__title">학급 투표</h2>
+      <p class="gt-card__body">A안과 B안의 득표수를 세어 주는 투표 프로그램</p>
+      <div class="gt-card__actions">
+        <a class="btn run" href="C_vote.html" target="_blank">실행하기</a>
+        <a class="btn dl" href="C_vote.html" download="C_학급투표.html">내려받기</a>
+      </div>
+      <div class="gt-card__foot"><span class="gt-card__status"><span class="gt-card__dot"></span><span class="st">배정 대기</span></span><span class="gt-card__meta">C_vote.html</span></div>
+    </article>
   </div>
 
   <div class="how">
@@ -56,7 +118,12 @@
   // 활동지에서 ?type=A 처럼 들어오면 해당 유형을 강조
   const t = new URLSearchParams(location.search).get('type');
   const el = t && document.getElementById(t.toUpperCase());
-  if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'center' }); }
+  if (el) {
+    el.classList.add('on');
+    el.querySelector('.st').textContent = '내 유형';
+    document.getElementById('cards').classList.add('picked');
+    el.scrollIntoView({ block: 'center' });
+  }
 </script>
 </body>
 </html>
